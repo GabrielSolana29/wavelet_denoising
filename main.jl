@@ -29,20 +29,10 @@ no_samples = 1024
 noLevels = 10
 sampled_signal = doppler
 wavelet = daub5
-a,d = wavelet_analysis(no_samples,sampled_signal[:,1],wavelet)
-currentLevel = 7 ##level  from where reconstruction starts
-fake_d = zeros(1024,11)
-a2= @time waveletSynthesis(no_samples,a[:,currentLevel+1],fake_d,currentLevel,wavelet)
-plot(1:1024,a2[:,1])
-fake_a = zeros(1024,11)
-d2= @time waveletSynthesis(no_samples,fake_a[:,currentLevel+1],d,currentLevel,wavelet)
-plot(1:1024,d2[:,1])
-
 
 anst = daub5[:,1] .* daub5[:,2]
 anst = sum(anst)
 plot(1:10,daub5[:,1])
-
 
 ## Returns the mse and the optimal level for denoising
 no_samples = 1024
@@ -51,9 +41,9 @@ threshold = heavy_sym
 signal_noisy = heaviSine_w
 original_signal = heaviSine
 wavelet = sym5
-## Finde the mse value and the optimal level to perform denoisisng
-#value,level = @time optimal_level_denoising(wavelet,original_signal,signal_noisy,no_samples,threshold,noLevels)
-value,level = @time optimal_level_denoising_sure(wavelet,original_signal,signal_noisy,no_samples,threshold,noLevels)
+## Find the mse value and the optimal level to perform denoisisng
+value,level = @time optimal_level_denoising(wavelet,original_signal,signal_noisy,no_samples,threshold,noLevels)
+#value,level = @time optimal_level_denoising_sure(wavelet,original_signal,signal_noisy,no_samples,threshold,noLevels)
 ### Obtain the figure of the denoised signal
 a,d = wavelet_analysis(no_samples,signal_noisy[:,1],wavelet)
 #clean_signal = denoising(a,d,threshold,level,no_samples,signal_noisy,noLevels,wavelet)
